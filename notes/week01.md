@@ -64,10 +64,10 @@ $$
 
 **定理 （No Free Lunch）**
 *设对某二分类问题有
-$\cal |X| \geq 2n$，
-$\cal Y=\{0,1\}$，
+$\cal |X| \geq 2n$ ，
+$\cal Y=\{0,1\}$ ，
 及
-$l(\hat y, (x,y))=\Bbb I\{\hat y(x) \neq y\}$。
+$l(\hat y, (x,y))=\Bbb I\{\hat y(x) \neq y\}$ 。
 则有
 $\cal V^{iid}(\cal Y^X,n)\geq 1/4$
 ，
