@@ -77,4 +77,9 @@ $\cal V^{iid}(\cal Y^X,n)\geq 1/4$
 
 ## A Harder Setup: Online Learning
 
+Different from statistical learning, data under online learning problem are presented one by one in a sequential manner. More concretely, the online learning procedure proceeds in rounds, and for each round $t=1,\ldots,n$ ,
+
+- The learner chooses $\hat y$ and the environment chooses $\cal z_t \in Z$ simultaneously
+- the learner suffers loss $l(\hat y_t, z_t)$ and observe $z_t$ .
+
 ## An Even Harder Setup: Online Learning with Partial Information

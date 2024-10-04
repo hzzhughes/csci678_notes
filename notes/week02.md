@@ -95,7 +95,7 @@ $$
 
 *where $\cal l(F)=\{h_f\in\Bbb R^Z:f\in F,h_f(z)=l(f,z),\forall z\}$*
 
-*Proof:* By definition of $L(f)$ , we rewrite it as $\cal\Bbb E_{z_1',\ldots,z_n'\sim P}[\frac{1}{n}\sum_{t=1}^n l(f,z_t)]$ and arrive at 
+*Proof:* By definition of $L(f)$ , we rewrite it as $\cal\Bbb E_{z_1',\ldots,z_n'\sim P}[\frac{1}{n}\sum_{t=1}^n l(f,z_t)]$ and arrive at
 $$
 \cal\Bbb E\left[\sup_{f\in F}\left(\it L(\hat f)-\frac{1}{n}\sum_{t=1}^n l(f,z_t)\right)\right]
 =\frac{1}{n}\cal\Bbb E_{z_{1:n}}\left[\sup_{f\in F}\Bbb E_{z_{1:n}'}\left[\sum_{t=1}^n (l(f,z_t')-l(f,z_t))\right]\right]
@@ -113,7 +113,7 @@ $$
 \frac{1}{n}\cal\Bbb E_{z_{1:n},z_{1:n}',\epsilon_{1:n}}\left[\sup_{f\in F}\sum_{t=1}^n \epsilon_t(l(f,z_t')-l(f,z_t))\right]
 $$
 
-> PS: Though this part is hard to understand, we can use some extra tools to prove this. It's easy to prove that $\epsilon_t(l(f,z_t')-l(f,z_t))=l(f,z_t'')-l(f,z_t''')$ where $ z_t''=\Bbb I(\epsilon_t=1)z_t'+\Bbb I(\epsilon_t=-1)z_t$ and $z_t'''=\Bbb I(\epsilon_t=1)z_t+\Bbb I(\epsilon_t=-1)z_t'$ . Clearly, we still have $z_{1:n},z_{1:n}',z_{1:n}'',z_{1:n}'''$ all follows the same distribution while keeping $z_t''$ and $z_t'''$ independent to each other. Then just by replacing $z_{1:n}',z_{1:n}$ in left of the equation above with $z_{1:n}'',z_{1:n}'''$ , we prove the equation.
+> PS: Though this part is hard to understand, we can use some extra tools to prove this. It's easy to prove that $\epsilon_t(l(f,z_t')-l(f,z_t))=l(f,z_t'')-l(f,z_t''')$ where $z_t''=\Bbb I(\epsilon_t=1)z_t'+\Bbb I(\epsilon_t=-1)z_t$ and $z_t'''=\Bbb I(\epsilon_t=1)z_t+\Bbb I(\epsilon_t=-1)z_t'$ . Clearly, we still have $z_{1:n},z_{1:n}',z_{1:n}'',z_{1:n}'''$ all follows the same distribution while keeping $z_t''$ and $z_t'''$ independent to each other. Then just by replacing $z_{1:n}',z_{1:n}$ in left of the equation above with $z_{1:n}'',z_{1:n}'''$ , we prove the equation.
 
 Next, by splitting the supreme into two parts, we have another upper bound
 $$
@@ -121,7 +121,7 @@ $$
 \cal\Bbb E_{z_{1:n},z_{1:n}',\epsilon_{1:n}}\left[\sup_{f\in F}\sum_{t=1}^n \epsilon_t(l(f,z_t')-l(f,z_t))\right]
 &\leq
 \cal\Bbb E_{z_{1:n},z_{1:n}',\epsilon_{1:n}}\left[\sup_{f\in F}\sum_{t=1}^n \epsilon_t l(f,z_t')+\sup_{f\in F}\sum_{t=1}^n -\epsilon_t l(f,z_t)\right]\\
-&= 
+&=
 \cal\Bbb E_{z_{1:n},z_{1:n}',\epsilon_{1:n}}\left[\sup_{f\in F}\sum_{t=1}^n \epsilon_t l(f,z_t')\right]+\Bbb E_{z_{1:n},z_{1:n}',\epsilon_{1:n}}\left[\sup_{f\in F}\sum_{t=1}^n -\epsilon_t l(f,z_t)\right]\\
 &=\cal 2nR^{iid}(l(F))
 \end{align*}
@@ -130,7 +130,22 @@ $$
 
 ### Erasing the loss for supervised learning
 
+Note that we used term $\cal R^{iid}(l(F))$ instead of $\cal R^{iid}(F)$ in the upper bound we just obtained, here we'll prove they are not that different at least for supervised learning problems where $\cal Z=X\times Y$ and $\cal F \sub Y^X$ .
+
+**Lemma:** *For a binary classification problem with $\cal Y=\{-1,+1\}$ and 0-1 loss, one has $\cal \hat R^{iid}(l(F);z_{1:n})=\frac{1}{2}\cal \hat R^{iid}(F;z_{1:n})$ for any sequence $z_{1:n}$ , and thus $\cal R^{iid}(l(F))=\frac{1}{2}\cal R^{iid}(F)$ .*
+
+*Proof.*
+
+*Q.E.D.*
+
+**Lemma (Contraction lemma):** *For a regression problem with $\cal Y \sub \Bbb R$ and loss $l(f,(x,y))=l'(f(x),y)$ for some loss $l'(f(x),y)$ that is G-Lipschitz in the first parameter (which means $\lvert l'(y_1,y)-l'(y_2,y)\rvert \leq G\lvert y_1-y_2\rvert$ holds for all $y_1,y_2,y$ )*
+
+*Proof.*
+
+*Q.E.D.*
+
 ## Finite Class
 
-## Infinite Class: Classification
+**Definition (σ-sub-Gaussion):** 
 
+## Infinite Class: Classification

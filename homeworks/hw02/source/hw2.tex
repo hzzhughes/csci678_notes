@@ -1,0 +1,169 @@
+\documentclass{article}
+\input{header}
+
+\title{CSCI 678: Theoretical Machine Learning \\ Homework 2 \\ {\small Fall 2024, Instructor: Haipeng Luo}}  
+
+\begin{document}
+\maketitle
+
+\textit{This homework is due on {\bf 10/13, 11:59pm}. 
+See course website for more instructions on finishing and submitting your homework as well as the late policy. Total points: \blue{50}}\\
+
+\begin{enumerate}[leftmargin=*,align=left]
+\item 
+({\bf Pseudo-dimension and fat-shattering dimension})
+For a function $f: [0,1] \rightarrow [-1,1]$, define its total variation $V(f)$ as 
+\[
+V(f) = \sup_{\substack{1 \leq m \in \mathbf{Z}_+ \\ 0= x_0 < x_1 < \cdots < x_m=1}}\;\sum_{j=1}^m |f(x_j) - f(x_{j-1})|,
+\]
+which, intuitively, measures how much the function varies on the interval $[0,1]$.
+Now, consider the function class $\calF=\cbr{f: [0,1] \rightarrow [-1,1] \;|\; V(f) \leq B}$ for some constant $B > 0$.
+
+\begin{enumerate}[leftmargin=*,align=left]
+\item (\blue{4pts})  Prove that the Pseudo-dimension of $\calF$ is infinity. \\
+
+
+\newpage
+\item Follow the two steps below to prove that the fat-shattering dimension of $\calF$ at scale $\alpha \leq 1$ is
+\[
+\fat(\calF, \alpha) = 1 + \left\lfloor \frac{B}{\alpha} \right\rfloor.
+\]
+
+\begin{enumerate}[leftmargin=*,align=left]
+\item (\blue{4pts})  For $n \leq 1 + \frac{B}{\alpha}$, construct a sequence of $n$ pairs $(x_1, y_1), \ldots, (x_n, y_n) \in [0,1] \times [-1,1]$, such that for any labeling $s_1, \ldots, s_n \in \cbr{-1,+1}$, there exists $f\in\calF$ with $s_t(f(x_t) - y_t) \geq \alpha/2$ for all $t = 1, \ldots, n$. (This shows $\fat(\calF, \alpha) \geq 1 + \left\lfloor \frac{B}{\alpha} \right\rfloor$.)\\
+
+
+\vspace{5pt}
+\item (\blue{5pts})  For any $n > 1 + \frac{B}{\alpha}$ and any sequence of $n$ pairs $(x_1, y_1), \ldots, (x_n, y_n) \in [0,1] \times [-1,1]$ with $x_1 < x_2 < \cdots < x_n$, show that if $f: [0,1]\rightarrow [-1,1]$ is such that $s_t(f(x_t) - y_t) \geq \alpha/2$ for all $t = 1, \ldots, n$ where
+\[
+s_1 = -1, s_2 = +1, s_3 = -1, s_4=+1, \ldots,
+\]
+and $g: [0,1]\rightarrow [-1,1]$ is such that $s_t(g(x_t) - y_t) \geq \alpha/2$ for all $t = 1, \ldots, n$ where
+\[
+s_1 = +1, s_2 = -1, s_3 = +1, s_4=-1, \ldots,
+\]
+then we must have $V(f)+V(g) > 2B$. 
+(Convince yourself that this implies $\fat(\calF, \alpha) \leq 1 + \left\lfloor \frac{B}{\alpha} \right\rfloor$.)\\
+
+\end{enumerate}
+
+\end{enumerate}
+
+\newpage
+\item
+({\bf Zero-covering number and shattering})
+Consider a class of binary predictors $\calF \subset \cbr{-1,+1}^\calX$.
+The concept of zero-covering number $\calN_0(\calF|_\bx)$ given an $\calX$-valued tree $\bx$ of depth $n$ is analogous to $|\calF|_{x_{1:n}}|$, the cardinality of the projection of $\calF$ on a dataset $x_{1:n}$ (in the statistical learning setting).
+However, there are some subtle differences between them.
+In particular, while $|\calF|_{x_{1:n}}| = 2^n$ is equivalent to $x_{1:n}$ being shattered by $\calF$, $\calN_0(\calF|_\bx) = 2^n$ is \textit{not} equivalent to $\bx$ being shattered by $\calF$.
+In this problem, you will explore why this is case. 
+(Understanding what the questions below are asking you to do is already a good test to your understanding of the related concepts.)
+
+\begin{enumerate}[leftmargin=*,align=left]
+
+\vspace{5pt}
+\item (\blue{4pts}) 
+Prove that if $\calF$ shatters $\bx$, then we indeed have $\calN_0(\calF|_\bx) = 2^n$.
+(Recall that $\calN_0(\calF|_\bx) \leq 2^n$ is always true, so this is really asking you to show $\calN_0(\calF|_\bx) \geq 2^n$.) \\
+
+\vspace{5pt}
+\item (\blue{4pts}) 
+Next, prove that $\calN_0(\calF|_\bx) = 2^n$ does not necessarily mean that $\calF$ shatters $\bx$. 
+Hint: consider a tree $\bx$ with depth $n$ being the VC-dimension of $\calF$ and the leftmost path consisting of $n$ points that are shattered by $\calF$ (in the statistical learning sense). \\
+
+
+\vspace{5pt}
+\item (\blue{4pts}) 
+Finally, prove that if $\calN_0(\calF|_\bx) = 2^n$, then there must exist a tree $\bx'$ of depth $n$ that is shattered by $\calF$. Hint: use Theorem 1 of Lecture 6, that is, the online analogue of Sauer's lemma. 
+(Note that combining (a) and (c), we have 
+\[
+\Ldim(\calF) = \max\cbr{n: \max_{\bx \text{ of depth $n$}} \calN_0(\calF |_\bx)=2^n},
+\] 
+which is analogous to $\VC(\calF) = \max\cbr{n: \max_{x_{1:n}} |\calF |_{x_{1:n}}|=2^n}$.) \\
+
+
+\end{enumerate}
+
+\newpage
+\item
+({\bf Littlestone dimension})
+Consider $\calX = \fR^d$ and the class 
+\begin{equation*}\label{eqn:simple_class}
+\calF = \cbr{f_{\theta,b}(x) = \begin{cases}
++1, &\text{if $\inner{\theta}{x}+b=0$} \\
+-1, &\text{else}
+\end{cases} \;\bigg\rvert\; 0 \neq \theta \in \fR^d, b \in \fR}.
+\end{equation*}
+which is a generalization of the simple class Eq.~(5) in Lecture 5 from one dimension to general dimension.
+In words, it classifies all the points residing in the hyperplane $\inner{\theta}{x}+b=0$ as $+1$, and everything else as $-1$.
+Follow the steps below to show $\Ldim(\calF) = d$.
+
+\begin{enumerate}[leftmargin=*,align=left]
+\vspace{5pt}
+\item (\blue{3pts}) 
+Construct a set of $d$ points $x_1, \ldots, x_d \in \fR^d$ that can be shattered by $\calF$ (in the statistical learning sense), which shows $d \leq \VC(\calF) \leq \Ldim(\calF)$. \\
+
+
+\vspace{5pt}
+\item (\blue{4pts}) 
+For $d = 2$, show that no tree $\bx$ of depth $3$ can be shattered by $\calF$.
+Hint: consider different cases for the three points on the rightmost path of $\bx$: are they collinear (that is, on the same line)? are some of them identical? \\
+
+
+\vspace{5pt}
+\item (\blue{8pts}) 
+Generalize the idea from the last question to show that for any dimension $d$, no tree of depth $d+1$ can be shattered by $\calF$, which shows $\Ldim(\calF) \leq d$. 
+Hint: a set of $n$ points $x_1, \ldots, x_n \in \fR^d$ are \textit{affinely} dependent if the following $n-1$ points are linearly dependent: $x_1 - x_n, x_2-x_n, \ldots, x_{n-1}-x_{n}$; 
+convince yourself that two points being affinely dependent if and only if they are identical, and three points being affinely dependent if and only if they are collinear. \\
+
+
+\end{enumerate}
+
+
+\newpage
+\item
+({\bf Lower bound for online classification})
+In this exercise you will prove $\seqV(\calF, n) \geq \sqrt{\frac{d}{8n}}$ where $d = \Ldim(\calF) \leq n$.
+For simplicity, we will further assume that $n$ is a multiple of $d$.
+The construction of the environment is as follows.
+The labels $y_1, \ldots, y_n$ are i.i.d. Rademacher random variables.
+To define the example $x_1, \ldots, x_n$,
+we divide the entire $n$ rounds evenly into $d$ epochs,
+where epoch $k$ contains rounds $n(k-1)/d+1, \ldots, nk/d$.
+On the same epoch, $x_t$ stays the same.
+Specifically, let 
+$
+\epsilon_k = \sign\rbr{\sum_{t \in \text{epoch $k$}} y_t}
+$
+be the majority vote of the true labels in epoch $k$, that is,
+\[
+\epsilon_k = \begin{cases}
++1, &\text{ if $\sum_{t \in \text{epoch $k$}} y_t \geq 0$,} \\
+-1, &\text{ else,}
+\end{cases}
+\]
+and $\bx$ be a tree of depth $d$ that is shattered by $\calF$.
+Then $x_t = \bx_k(\beps)$ for any $t$ that belongs to epoch $k$.
+This concludes the construction of the environment. \\
+
+\begin{enumerate}[leftmargin=*,align=left]
+\vspace{5pt}
+\item (\blue{2pts}) 
+For any online learner, let $s_1, \ldots, s_n \in \cbr{-1, +1}$ be its sequential predictions for $x_1, \ldots, x_n$ in this environment. Calculate the learner's expected loss $\E\sbr{\sum_{t=1}^n \one\cbr{s_t \neq y_t}}$, where the expectation is with respect to the randomness of both the learner and the environment. \\
+
+
+
+\vspace{5pt}
+\item (\blue{4pts}) 
+Calculate $\E\sbr{\inf_{f\in\calF} \sum_{t=1}^n \one\cbr{f(x_t) \neq y_t}}$, the expected loss of the best classifier in $\calF$, where the randomness is with respect to the randomness of the environment. \\
+
+
+\vspace{5pt}
+\item (\blue{4pts}) 
+Conclude the statement $\seqV(\calF, n) \geq \sqrt{\frac{d}{8n}}$. Hint: use the Khinchine inequality that says the expected magnitude of the sum of $m$ i.i.d. Rademacher random variables is at least $\sqrt{m/2}$ for any $m \geq 1$.
+
+\end{enumerate}
+
+
+\end{enumerate}
+\end{document}
