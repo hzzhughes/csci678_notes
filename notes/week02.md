@@ -138,7 +138,7 @@ Note that we used term $\cal R^{iid}(l(F))$ instead of $\cal R^{iid}(F)$ in the 
 
 *Q.E.D.*
 
-**Lemma (Contraction lemma):** *For a regression problem with $\cal Y \sub \Bbb R$ and loss $l(f,(x,y))=l'(f(x),y)$ for some loss $l'(f(x),y)$ that is G-Lipschitz in the first parameter (which means $\lvert l'(y_1,y)-l'(y_2,y)\rvert \leq G\lvert y_1-y_2\rvert$ holds for all $y_1,y_2,y$ )*
+**Lemma (Contraction lemma):** *For a regression problem with $\cal Y \sub \Bbb R$ and loss $l(f,(x,y))=l'(f(x),y)$ for some loss $l'(f(x),y)$ that is G-Lipschitz in the first parameter (which means $\lvert l'(y_1,y)-l'(y_2,y)\rvert \leq G\lvert y_1-y_2\rvert$ holds for all $y_1,y_2,y$ )*, we have $\cal \hat R^{iid}(l(F;z_{1:n}))\leq \it G\hat R^{iid}(\cal F;x_{1:n})$ , and thus $\cal R^{iid}(l(F;z_{1:n}))\leq \it G R^{iid}(\cal F;x_{1:n})$
 
 *Proof.*
 
