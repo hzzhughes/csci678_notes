@@ -1,0 +1,152 @@
+\documentclass{article}
+\input{header}
+
+\title{CSCI 678: Theoretical Machine Learning \\ Homework 3 \\ {\small Fall 2024, Instructor: Haipeng Luo}}   
+
+\begin{document}
+\maketitle
+
+\textit{This homework is due on {\bf 11/03, 11:59pm}. 
+See course website for more instructions on finishing and submitting your homework as well as the late policy. Total points: \blue{40}}\\
+
+
+\begin{enumerate}[leftmargin=*,align=left]
+\item
+({\bf Hedge}) (\blue{6pts}) 
+For a finite class of binary classifier $\calF \subset \cbr{-1,+1}^\calX$,
+under the realizable assumption $\inf_{f\in\calF} \sum_{t=1}^n \one\cbr{f(x_t) \neq y_t} = 0$,
+prove that Hedge with learning rate $\eta=1/2$ makes at most $4\ln|\calF|$ mistakes in expectation. 
+Hint: use Lemma 1 of Lecture 6.
+(Note that this is similar to the guarantee of Halving, but achieved via a proper algorithm this time.)
+
+\newpage
+\item 
+({\bf Perceptron and sequential fat-shattering dimension})
+Recall the sequential fat-shattering dimension $\sfat(\calF, \alpha)$ defined in Lectures 6.
+Let $\calX = B^d_2$ and $\calF = \cbr{f_\theta(x) = \inner{\theta}{x} \;|\; \theta \in B^d_2}$.
+In this exercise, you will prove $\sfat(\calF, \alpha) \leq \frac{16}{\alpha^2}$ (which is independent of $d$) for any $\alpha > 0$, using an indirect approach that leverages the guarantee of the Perceptron algorithm.
+
+More specifically, suppose that $\bx$ is a $\calX$-valued tree of depth $n$ that is $\alpha$-shattered by $\calF$, with witness $\by$, a $[-1,+1]$-valued tree.
+Now, imagine running Perceptron in the following problem instance in $\fR^{d+1}$:
+
+\begin{figure}[H]
+\begin{framed}
+Let $\theta' = \bzero \in \fR^{d+1}$. For $t = 1, \ldots, n$:
+\begin{itemize}
+\item Environment reveals example $x'_t = \frac{1}{\sqrt{2}}(\bx_t(y'_{1:t-1}), \by_t(y'_{1:t-1})) \in B_2^{d+1}$.
+
+\item Perceptron algorithm predicts $s_t = \sign(\inner{x_t'}{\theta'})$.
+
+\item Environment reveals $y_t' = -s_t$, forcing Perceptron to make an update $\theta' \leftarrow \theta' + y_t' x_t'$.
+\end{itemize}
+\end{framed}
+\end{figure}
+
+Note that the environment is valid even though it seemingly decides the label $y_t'$ after seeing the algorithm's prediction $s_t$, since Perceptron is a deterministic algorithm (and thus $x_{1:n}'$ and $y_{1:n}'$ are in fact all fixed ahead of time).
+
+\begin{enumerate}[leftmargin=*,align=left]
+
+\vspace{5pt}
+\item (\blue{4pts}) 
+Prove that the data constructed above satisfy the $\gamma$-margin assumption (Assumption 1 of Lecture 7) with $p=q=2$.
+In other words, find a specific value of $\gamma >0$ and show that there exists $\theta_\star' \in B_2^{d+1}$ such that $y_t'\inner{\theta_\star'}{x_t'} \geq \gamma$ holds for all $t = 1, \ldots, n$. \\
+
+
+\vspace{5pt}
+\item (\blue{3pts}) 
+Use the guarantee of Perceptron (that is, Theorem 3 of Lecture 7) to conclude $\sfat(\calF, \alpha) \leq \frac{16}{\alpha^2}$.  \\
+
+\end{enumerate}
+
+\newpage
+\item 
+({\bf Winnow})
+When the $\gamma$-margin assumption holds with $p=q=2$, we have seen that Perceptron makes at most $\frac{1}{\gamma^2}$ mistakes for an online binary classification problem.
+In this exercise, you will prove a similar result when the $\gamma$-margin assumption holds with $p=1$ and $q=\infty$, using a different algorithm called {\it Winnow}.
+To show this, we first consider the following generalization of Perceptron, defined in terms of some \textit{link function} $g: \fR^d \rightarrow \fR^d$.
+
+\begin{minipage}{\linewidth}
+\begin{algorithm}[H]
+\caption{A generalization of Perceptron}
+\label{alg:generalized_Perceptron}
+Let $\theta = \bzero$. For $t = 1, \ldots, n$:
+\begin{itemize}
+\item Receive $x_t$ and predict $s_t = \sign(\inner{x_t}{g(\theta)})$.
+\item Receive $y_t\in\cbr{-1,+1}$. If $y_t \neq s_t$, update $\theta \leftarrow \theta + y_t x_t$.
+\end{itemize}
+\end{algorithm}
+\end{minipage}
+
+It is clear that when instantiated with $g$ being the identity mapping $g(\theta) = \theta$, \pref{alg:generalized_Perceptron} is exactly the Perceptron algorithm.
+Below, we will see that the Winnow algorithm is also an instance of \pref{alg:generalized_Perceptron} but with a different link function.
+Throughout, we assume $x_t \in B_\infty^d$, that is, $\norm{x_t}_\infty \leq 1$, for all $t$.
+
+\begin{enumerate}[leftmargin=*,align=left]
+\vspace{5pt}
+\item 
+Consider running \pref{alg:generalized_Perceptron} with link function $g(\theta) = \exp(\eta\theta)$ and some parameter $\eta > 0$ (where the exponentiation is applied coordinate-wise to the vector $\eta\theta$).
+Let's call this the simplified Winnow algorithm.
+
+\begin{enumerate}[leftmargin=*,align=left]
+\vspace{5pt}
+\item (\blue{4pts}) Find a sequence of loss vectors $\loss_1, \ldots, \loss_n \in [-1,+1]^d$ such that the prediction of simplified Winnow $s_t = \sign(\inner{x_t}{g(\theta)})$ can be equivalently written as $s_t = \sign(\inner{x_t}{p_t})$,  where $p_t \in \Delta(d)$ is a distribution such that 
+\[
+p_t(i) \propto \exp\rbr{-\eta \sum_{\tau<t} \loss_\tau(i)}, \quad\text{for all $i = 1, \ldots, d$.}
+\]
+
+
+\vspace{5pt}
+\item (\blue{8pts})
+Based on the reformulation of the last question, apply Lemma 1 of Lecture 6 to show that as long as $\eta \leq 1$, we have for any $\theta^\star \in \Delta(d)$:
+\[
+\sum_{t=1}^n \one\cbr{y_t \neq s_t} y_t\inner{\theta^\star}{x_t}
+\leq \frac{\ln d}{\eta} + \eta M,
+\]
+where $M = \sum_{t=1}^n \one\cbr{y_t \neq s_t}$ is the total number of mistakes made by the simplified Winnow algorithm. \\
+
+
+\vspace{5pt}
+\item (\blue{3pts})
+Consider the following assumption that is slightly stronger than the original $\gamma$-margin assumption with $p=1$ and $q=\infty$:
+\begin{equation}\label{eqn:simplified_margin}
+\text{there exists $\theta^\star \in \Delta(d)$ such that $y_t\inner{\theta^\star}{x_t} \geq \gamma$ for all $t$.}
+\end{equation}
+Prove that under this assumption, the total number of mistakes $M$ made by the simplified Winnow algorithm is at most $\frac{4\ln d}{\gamma^2}$ when $\eta = \frac{\gamma}{2} \leq 1$. \\
+
+
+\end{enumerate}
+
+
+\vspace{5pt}
+\item
+Now consider the original $\gamma$-margin assumption, that is: 
+\begin{equation}\label{eqn:margin}
+\text{there exists $\theta^\star \in B_1^d$ such that $y_t\inner{\theta^\star}{x_t} \geq \gamma$ for all $t$.}
+\end{equation}
+To deal with this more general case, we will run \pref{alg:generalized_Perceptron} using a different link function $g(\theta) = \exp(\eta\theta)-\exp(-\eta\theta)$ (again, the exponentiation is coordinate-wise).
+This is the (actual) Winnow algorithm.
+\\
+
+\begin{enumerate}[leftmargin=*,align=left]
+\vspace{5pt}
+\item (\blue{4pts}) 
+Prove that the Winnow algorithm is the same as running the simplified Winnow algorithm over examples $x_t' = (x_t, -x_t) \in B_\infty^{2d}$ and $y_t' = y_t$ for $t = 1, \ldots, n$. \\
+
+
+\vspace{5pt}
+\item (\blue{6pts}) 
+Under the margin assumption \pref{eqn:margin}, further prove that the examples $(x_{1:n}', y_{1:n}')$ defined above satisfy \pref{eqn:simplified_margin} for some margin $\gamma'$, that is, there exists $\theta' \in \Delta(2d)$ such that $y_t'\inner{\theta'}{x_t} \geq \gamma'$ for all $t$. \\
+
+
+\vspace{5pt}
+\item (\blue{2pts}) 
+Finally, under the margin assumption  \pref{eqn:margin}, use the result from Question (a)iii to provide a bound on the total number of mistakes made by the Winnow algorithm when $\eta = \frac{\gamma}{2}$. \\
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+
+\end{enumerate}
+\end{document}
